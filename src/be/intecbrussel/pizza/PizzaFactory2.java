@@ -7,4 +7,9 @@ public class PizzaFactory2 extends Pizza implements Serializable {
 
     public PizzaFactory2() {
     }
+
+    @Override
+    public String toString() {
+        return  "Type:'" + Type + '\'';
+    }
 }

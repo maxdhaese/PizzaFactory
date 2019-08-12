@@ -1,45 +1,50 @@
 package be.intecbrussel.Main;
 
-import be.intecbrussel.Thread.PizzaFactory1Thread;
-import be.intecbrussel.Thread.PizzaFactory2Thread;
+import be.intecbrussel.Thread.*;
 import be.intecbrussel.pizza.Pizza;
-import be.intecbrussel.pizza.PizzaFactory1;
 import be.intecbrussel.pizza.WareHouseAdd;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class MainApp {
     public static void main(String[] args) {
 
-        File file = new File("PizzaFile.txt");
-
         ArrayList<Pizza> wareHouse = new ArrayList<>();
         WareHouseAdd wareHouseAdd = new WareHouseAdd();
+        Queue<String> pizzaQueue = new ConcurrentLinkedQueue<String>();
+
 
         try {
-            ObjectOutputStream f1OutputStream = new ObjectOutputStream(new FileOutputStream(file));
-            ObjectOutputStream f2OutPutStream = new ObjectOutputStream(new FileOutputStream(file));
-
-            Thread thread1 = new PizzaFactory1Thread(wareHouse, wareHouseAdd, f1OutputStream);
-            Thread thread2 = new PizzaFactory2Thread(wareHouse, wareHouseAdd, f2OutPutStream);
+            Thread thread1 = new PizzaFactory1Thread(wareHouse, wareHouseAdd,pizzaQueue);
+            Thread thread2 = new PizzaFactory2Thread(wareHouse, wareHouseAdd,pizzaQueue);
+            Thread thread3 = new PizzaShop1Thread(wareHouse, wareHouseAdd,pizzaQueue);
+            Thread thread4 = new PizzaShop2Thread(wareHouse,wareHouseAdd,pizzaQueue);
+            Thread thread5 = new PizzaQueue(pizzaQueue);
 
             thread1.start();
             thread2.start();
+            thread3.start();
+            thread4.start();
+            thread5.start();
 
-            System.out.println("Preparing Pizza's");
+            System.out.println("Factory running.. Shop running..");
 
             thread1.join();
             thread2.join();
+            thread3.join();
+            thread4.join();
+            thread5.join();
 
-            System.out.println("Pizza's in the warehouse: " +wareHouse.size());
 
 
 
-        }catch (IOException | InterruptedException e){
+            pizzaQueue.forEach(System.out::println);
+            System.out.println("finished");
+
+
+
+        }catch (InterruptedException e) {
             e.printStackTrace();
         }
 

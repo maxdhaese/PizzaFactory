@@ -3,40 +3,40 @@ package be.intecbrussel.Thread;
 import be.intecbrussel.pizza.Pizza;
 import be.intecbrussel.pizza.PizzaFactory2;
 import be.intecbrussel.pizza.WareHouseAdd;
-
-
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class PizzaFactory2Thread extends Thread {
 
     private ArrayList<Pizza> wareHouse;
     private WareHouseAdd wareHouseAdd;
-    private ObjectOutputStream outputStream;
+    private Queue<String> pizzaQueue = new ConcurrentLinkedQueue<String>();
 
-    public PizzaFactory2Thread(ArrayList<Pizza> wareHouse, WareHouseAdd wareHouseAdd, ObjectOutputStream outputStream) {
+
+    public PizzaFactory2Thread(ArrayList<Pizza> wareHouse, WareHouseAdd wareHouseAdd, Queue<String> pizzaQueue) {
         this.wareHouse = wareHouse;
         this.wareHouseAdd = wareHouseAdd;
-        this.outputStream = outputStream;
+        this.pizzaQueue = pizzaQueue;
+
     }
 
     @Override
     public void run() {
-        while (!isInterrupted()){
-            if (wareHouse.size() < 15){
+        while (!isInterrupted()) {
+            if (wareHouse.size() <= 1500) {
                 try {
                     Pizza pizza = new PizzaFactory2();
-                    outputStream.writeObject(pizza);
-                    wareHouseAdd.addPizza(pizza,wareHouse);
-                    Thread.sleep(200);
+                    wareHouseAdd.addPizza(pizza, wareHouse);
+                    Thread.sleep(2000);
+                    pizzaQueue.add("A Mozzarella pizza was made");
+                    System.out.println("made a pizza Mozzarella");
 
-                }catch (IOException e){
-                    e.printStackTrace();
-                }catch (InterruptedException e){
+
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }else {
+            } else {
                 this.interrupt();
             }
         }

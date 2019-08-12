@@ -20,7 +20,8 @@ public class PizzaShop1Thread extends Thread {
         this.pizzaQueue = pizzaQueue;
 
     }
-
+    //Method that will start selling pizza's every 5 seconds when the warehouse size is lower than 1500.
+    //Also adding a message to the pizzaQueue that a pizza was sold
     @Override
     public void run() {
         while (!isInterrupted()){

@@ -21,6 +21,8 @@ public class PizzaFactory1Thread extends Thread {
 
     }
 
+    //run method that will add a pizza to the warehouse list if the list is under 1500 pizza's.
+    //Also add a message to the pizzaQueue that a pizza was made
     @Override
     public void run() {
         while (!isInterrupted()) {

@@ -13,6 +13,7 @@ public class PizzaQueue extends Thread {
         this.pizzaQueue = pizzaQueue;
     }
 
+    //While the thread is active it will send the Strings from the factories and shops to a pizzafile.txt
     @Override
     public void run() {
         while (!isInterrupted()) {

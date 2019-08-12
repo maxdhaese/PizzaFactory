@@ -14,7 +14,7 @@ public class MainApp {
         WareHouseAdd wareHouseAdd = new WareHouseAdd();
         Queue<String> pizzaQueue = new ConcurrentLinkedQueue<String>();
 
-
+        //create the threads and start them
         try {
             Thread thread1 = new PizzaFactory1Thread(wareHouse, wareHouseAdd,pizzaQueue);
             Thread thread2 = new PizzaFactory2Thread(wareHouse, wareHouseAdd,pizzaQueue);
